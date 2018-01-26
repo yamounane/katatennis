@@ -3,11 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.yamounane.kata</groupId>
-  <artifactId>katatennis</artifactId>
+  <artifactId>tennis</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>katatennis</name>
+  <name>tennis</name>
   <url>http://maven.apache.org</url>
 
 	<properties>
