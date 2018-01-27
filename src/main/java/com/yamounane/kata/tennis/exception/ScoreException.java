@@ -7,7 +7,10 @@ package com.yamounane.kata.tennis.exception;
  */
 
 public class ScoreException extends Exception {
-	
+
 	private static final long serialVersionUID = -3957803744788890642L;
 
+	public ScoreException(String message) {
+		super(message);
+	}
 }
