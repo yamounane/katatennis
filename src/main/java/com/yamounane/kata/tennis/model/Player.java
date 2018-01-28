@@ -25,6 +25,8 @@ public class Player {
 
 	private GamePoint game;
 
+	private boolean winner;
+
 	private ArrayList<SetPoint> sets;
 
 	public Player(String name) {
@@ -32,6 +34,7 @@ public class Player {
 		this.game = new GamePoint();
 		this.sets = new ArrayList<>();
 		sets.add(new SetPoint());
+		this.winner = false;
 	}
 
 	public void winTheGame() {
@@ -39,8 +42,8 @@ public class Player {
 		sets.stream().filter(s -> s.isCurrent()).findFirst().get().score();
 	}
 
-	public void endTheSet() {
-		sets.stream().filter(s -> s.isCurrent()).findFirst().get().finish();
+	public void endTheSet(boolean win) {
+		sets.stream().filter(s -> s.isCurrent()).findFirst().get().finish(win);
 		sets.add(new SetPoint());
 	}
 
@@ -48,4 +51,12 @@ public class Player {
 		this.game.setScore(0);
 	}
 
+	public void wins() {
+		this.winner = true;
+		this.sets.remove(sets.size() - 1);
+	}
+
+	public void looses() {
+		this.sets.remove(sets.size() - 1);
+	}
 }

@@ -28,7 +28,6 @@ public class ScoreServiceTest {
 	private TennisParty rollandGarrosFinal;
 	private Player nadal;
 	private Player federer;
-	private Player monfils;
 
 	@Before
 	public void setUp() {
@@ -36,7 +35,6 @@ public class ScoreServiceTest {
 
 		nadal = new Player("Rafael Nadal");
 		federer = new Player("Roger Federer");
-		monfils = new Player("Gael Monfils");
 
 		rollandGarrosFinal = new TennisParty(nadal, federer);
 	}
@@ -98,7 +96,7 @@ public class ScoreServiceTest {
 	}
 
 	@Test
-	public void should_player_win_the_set_when_player_win_24_games() throws ScoreException {
+	public void should_player_win_the_set_when_player_win_6_games_to_0() throws ScoreException {
 		repeat(24, () -> {
 			try {
 				scoreService.score(rollandGarrosFinal, federer);
@@ -221,8 +219,87 @@ public class ScoreServiceTest {
 	}
 
 	@Test
+	public void should_player_win_the_party_when_player_win_6_0_and_6_0_games() throws ScoreException {
+		repeat(48, () -> {
+			try {
+				scoreService.score(rollandGarrosFinal, federer);
+			} catch (ScoreException e) {
+				fail();
+			}
+		});
+
+		assertThat(nadal.getGame().getScore()).isEqualTo(0);
+		assertThat(nadal.getSets().get(0).getScore()).isEqualTo(0);
+		assertThat(nadal.getSets().get(1).getScore()).isEqualTo(0);
+		assertThat(nadal.getSets().get(0).isCurrent()).isEqualTo(false);
+		assertThat(nadal.getSets().get(1).isCurrent()).isEqualTo(false);
+		assertThat(nadal.getSets().size()).isEqualTo(2);
+		assertThat(nadal.isWinner()).isEqualTo(false);
+		assertThat(federer.getGame().getScore()).isEqualTo(0);
+		assertThat(federer.getSets().get(0).getScore()).isEqualTo(6);
+		assertThat(federer.getSets().get(1).getScore()).isEqualTo(6);
+		assertThat(federer.getSets().get(0).isCurrent()).isEqualTo(false);
+		assertThat(federer.getSets().get(1).isCurrent()).isEqualTo(false);
+		assertThat(federer.getSets().size()).isEqualTo(2);
+		assertThat(federer.isWinner()).isEqualTo(true);
+		assertThat(rollandGarrosFinal.isFinished()).isEqualTo(true);
+	}
+
+	@Test
+	public void should_player_win_the_party_when_player_win_6_0_and_0_6_and_6_0_games() throws ScoreException {
+		repeat(24, () -> {
+			try {
+				scoreService.score(rollandGarrosFinal, nadal);
+			} catch (ScoreException e) {
+				fail();
+			}
+		});
+		repeat(24, () -> {
+			try {
+				scoreService.score(rollandGarrosFinal, federer);
+			} catch (ScoreException e) {
+				fail();
+			}
+		});
+		repeat(24, () -> {
+			try {
+				scoreService.score(rollandGarrosFinal, nadal);
+			} catch (ScoreException e) {
+				fail();
+			}
+		});
+
+		assertThat(nadal.getGame().getScore()).isEqualTo(0);
+		assertThat(nadal.getSets().get(0).getScore()).isEqualTo(6);
+		assertThat(nadal.getSets().get(1).getScore()).isEqualTo(0);
+		assertThat(nadal.getSets().get(2).getScore()).isEqualTo(6);
+		assertThat(nadal.getSets().get(0).isCurrent()).isEqualTo(false);
+		assertThat(nadal.getSets().get(1).isCurrent()).isEqualTo(false);
+		assertThat(nadal.getSets().get(2).isCurrent()).isEqualTo(false);
+		assertThat(nadal.getSets().size()).isEqualTo(3);
+		assertThat(nadal.isWinner()).isEqualTo(true);
+		assertThat(federer.getGame().getScore()).isEqualTo(0);
+		assertThat(federer.getSets().get(0).getScore()).isEqualTo(0);
+		assertThat(federer.getSets().get(1).getScore()).isEqualTo(6);
+		assertThat(federer.getSets().get(2).getScore()).isEqualTo(0);
+		assertThat(federer.getSets().get(0).isCurrent()).isEqualTo(false);
+		assertThat(federer.getSets().get(1).isCurrent()).isEqualTo(false);
+		assertThat(federer.getSets().get(2).isCurrent()).isEqualTo(false);
+		assertThat(federer.getSets().size()).isEqualTo(3);
+		assertThat(federer.isWinner()).isEqualTo(false);
+		assertThat(rollandGarrosFinal.isFinished()).isEqualTo(true);
+	}
+
+	@Test
 	public void should_raise_exception_when_scoring_for_null_player() throws ScoreException {
 		assertThatThrownBy(() -> scoreService.score(rollandGarrosFinal, null)).isInstanceOf(ScoreException.class);
+	}
+
+	@Test
+	public void should_raise_exception_when_scoring_for_player_on_finished_party() throws ScoreException {
+		rollandGarrosFinal.setFinished(true);
+
+		assertThatThrownBy(() -> scoreService.score(rollandGarrosFinal, nadal)).isInstanceOf(ScoreException.class);
 	}
 
 	@Test
@@ -237,7 +314,8 @@ public class ScoreServiceTest {
 
 	@Test
 	public void should_raise_exception_when_scoring_for_a_non_registered_player_for_party() throws ScoreException {
-		assertThatThrownBy(() -> scoreService.score(rollandGarrosFinal, monfils)).isInstanceOf(ScoreException.class);
+		assertThatThrownBy(() -> scoreService.score(rollandGarrosFinal, new Player("Gael Monfils")))
+				.isInstanceOf(ScoreException.class);
 	}
 
 	private void repeat(int times, Runnable runnable) {

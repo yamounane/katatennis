@@ -8,9 +8,9 @@ public class ScoreServiceImpl implements ScoreService {
 
 	@Override
 	public void score(TennisParty party, Player player) throws ScoreException {
-		if (party == null || player == null || !party.isRegistered(player)) {
+		if (party == null || player == null || party.isFinished() || !party.isRegistered(player)) {
 			throw new ScoreException(String.format(
-					"Unable to score player %s for party %s : player or party are null or player is not registered for this party",
+					"Unable to score player %s for party %s : party is over or player/party are null or player is not registered for this party",
 					player, party));
 		}
 
@@ -22,13 +22,27 @@ public class ScoreServiceImpl implements ScoreService {
 				scorer.winTheGame();
 				second.looseTheGame();
 				if (isSetIsWonByScorer(scorer, second)) {
-					scorer.endTheSet();
-					second.endTheSet();
+					scorer.endTheSet(true);
+					second.endTheSet(false);
+					if (partyIsWon(scorer, second)) {
+						party.setFinished(true);
+						scorer.wins();
+						second.looses();
+					}
 				}
 			} else {
 				scorer.getGame().advantage();
 			}
 		}
+	}
+
+	private boolean partyIsWon(Player scorer, Player second) {
+		long winningScorerSet = scorer.getSets().stream().filter(s -> s.isWon()).count();
+
+		if (winningScorerSet >= 2) {
+			return true;
+		}
+		return false;
 	}
 
 	private boolean isCurrentGameIsDeuce(TennisParty party) {
@@ -45,7 +59,6 @@ public class ScoreServiceImpl implements ScoreService {
 		if (secondSet < 5 && scorerSet > 5 || secondSet <= 6 && scorerSet > 6) {
 			return true;
 		}
-
 		return false;
 	}
 

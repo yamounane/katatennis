@@ -12,16 +12,21 @@ public class SetPoint extends Point {
 
 	private boolean current;
 
+	private boolean won;
+
 	public SetPoint() {
 		super(0);
 		current = true;
+		won = false;
 	}
 
-	public void finish() {
+	public void finish(boolean win) {
 		current = false;
+		won = win;
 	}
 
 	public void score() {
 		score++;
 	}
+
 }
