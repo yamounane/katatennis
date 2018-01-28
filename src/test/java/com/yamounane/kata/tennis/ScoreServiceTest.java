@@ -71,12 +71,11 @@ public class ScoreServiceTest {
 		scoreService.score(rollandGarrosFinal, federer);
 		scoreService.score(rollandGarrosFinal, nadal);
 		scoreService.score(rollandGarrosFinal, federer);
-		scoreService.score(rollandGarrosFinal, federer);
 
-		assertThat(federer.getSets().get(0).getScore()).isEqualTo(1);
-		assertThat(federer.getGame().getScore()).isEqualTo(0);
+		assertThat(federer.getSets().get(0).getScore()).isEqualTo(0);
+		assertThat(federer.getGame().getScore()).isEqualTo(4);
 		assertThat(nadal.getSets().get(0).getScore()).isEqualTo(0);
-		assertThat(nadal.getGame().getScore()).isEqualTo(0);
+		assertThat(nadal.getGame().getScore()).isEqualTo(3);
 	}
 
 	@Test
