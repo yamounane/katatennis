@@ -120,7 +120,72 @@ public class ScoreServiceTest {
 	}
 
 	@Test
-	public void should_player_win_the_set_when_player_win_28_against_24_games() throws ScoreException {
+	public void should_player_win_the_set_when_player_win_6_against_4_games() throws ScoreException {
+		repeat(16, () -> {
+			try {
+				scoreService.score(rollandGarrosFinal, federer);
+			} catch (ScoreException e) {
+				fail();
+			}
+		});
+		repeat(24, () -> {
+			try {
+				scoreService.score(rollandGarrosFinal, nadal);
+			} catch (ScoreException e) {
+				fail();
+			}
+		});
+
+		assertThat(nadal.getGame().getScore()).isEqualTo(0);
+		assertThat(nadal.getSets().get(0).getScore()).isEqualTo(6);
+		assertThat(nadal.getSets().get(1).getScore()).isEqualTo(0);
+		assertThat(nadal.getSets().get(0).isCurrent()).isEqualTo(false);
+		assertThat(nadal.getSets().get(1).isCurrent()).isEqualTo(true);
+		assertThat(federer.getGame().getScore()).isEqualTo(0);
+		assertThat(federer.getSets().get(0).getScore()).isEqualTo(4);
+		assertThat(federer.getSets().get(1).getScore()).isEqualTo(0);
+		assertThat(federer.getSets().get(0).isCurrent()).isEqualTo(false);
+		assertThat(federer.getSets().get(1).isCurrent()).isEqualTo(true);
+	}
+
+	@Test
+	public void should_player_win_the_set_when_player_win_7_against_5_games() throws ScoreException {
+		repeat(20, () -> {
+			try {
+				scoreService.score(rollandGarrosFinal, federer);
+			} catch (ScoreException e) {
+				fail();
+			}
+		});
+		repeat(20, () -> {
+			try {
+				scoreService.score(rollandGarrosFinal, nadal);
+			} catch (ScoreException e) {
+				fail();
+			}
+		});
+		repeat(8, () -> {
+			try {
+				scoreService.score(rollandGarrosFinal, federer);
+			} catch (ScoreException e) {
+				fail();
+			}
+		});
+
+		assertThat(nadal.getGame().getScore()).isEqualTo(0);
+		assertThat(nadal.getSets().get(0).getScore()).isEqualTo(5);
+		assertThat(nadal.getSets().get(1).getScore()).isEqualTo(0);
+		assertThat(nadal.getSets().get(0).isCurrent()).isEqualTo(false);
+		assertThat(nadal.getSets().get(1).isCurrent()).isEqualTo(true);
+		assertThat(federer.getGame().getScore()).isEqualTo(0);
+		assertThat(federer.getSets().get(0).getScore()).isEqualTo(7);
+		assertThat(federer.getSets().get(1).getScore()).isEqualTo(0);
+		assertThat(federer.getSets().get(0).isCurrent()).isEqualTo(false);
+		assertThat(federer.getSets().get(1).isCurrent()).isEqualTo(true);
+	}
+
+	@Test
+	public void should_player_win_the_set_when_player_win_7_against_6_games() throws ScoreException {
 		repeat(20, () -> {
 			try {
 				scoreService.score(rollandGarrosFinal, federer);
