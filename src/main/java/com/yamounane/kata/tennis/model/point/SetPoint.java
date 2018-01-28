@@ -12,8 +12,8 @@ public class SetPoint extends Point {
 
 	private boolean current;
 
-	public SetPoint(int score) {
-		super(score);
+	public SetPoint() {
+		super(0);
 		current = true;
 	}
 

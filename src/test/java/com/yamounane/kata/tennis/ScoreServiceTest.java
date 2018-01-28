@@ -1,7 +1,9 @@
 package com.yamounane.kata.tennis;
 
+import static java.util.stream.IntStream.range;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.Assert.fail;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -96,6 +98,28 @@ public class ScoreServiceTest {
 	}
 
 	@Test
+	public void should_player_win_the_set_when_player_win_24_games() throws ScoreException {
+		repeat(24, () -> {
+			try {
+				scoreService.score(rollandGarrosFinal, federer);
+			} catch (ScoreException e) {
+				fail();
+			}
+		});
+
+		assertThat(nadal.getGame().getScore()).isEqualTo(0);
+		assertThat(nadal.getSets().get(0).getScore()).isEqualTo(0);
+		assertThat(nadal.getSets().get(1).getScore()).isEqualTo(0);
+		assertThat(nadal.getSets().get(0).isCurrent()).isEqualTo(false);
+		assertThat(nadal.getSets().get(1).isCurrent()).isEqualTo(true);
+		assertThat(federer.getGame().getScore()).isEqualTo(0);
+		assertThat(federer.getSets().get(0).getScore()).isEqualTo(6);
+		assertThat(federer.getSets().get(1).getScore()).isEqualTo(0);
+		assertThat(federer.getSets().get(0).isCurrent()).isEqualTo(false);
+		assertThat(federer.getSets().get(1).isCurrent()).isEqualTo(true);
+	}
+
+	@Test
 	public void should_raise_exception_when_scoring_for_null_player() throws ScoreException {
 		assertThatThrownBy(() -> scoreService.score(rollandGarrosFinal, null)).isInstanceOf(ScoreException.class);
 	}
@@ -113,5 +137,9 @@ public class ScoreServiceTest {
 	@Test
 	public void should_raise_exception_when_scoring_for_a_non_registered_player_for_party() throws ScoreException {
 		assertThatThrownBy(() -> scoreService.score(rollandGarrosFinal, monfils)).isInstanceOf(ScoreException.class);
+	}
+
+	private void repeat(int times, Runnable runnable) {
+		range(0, times).forEach(i -> runnable.run());
 	}
 }

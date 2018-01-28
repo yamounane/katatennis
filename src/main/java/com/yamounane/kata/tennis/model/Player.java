@@ -31,15 +31,20 @@ public class Player {
 		this.name = name;
 		this.game = new GamePoint();
 		this.sets = new ArrayList<>();
-		sets.add(new SetPoint(0));
+		sets.add(new SetPoint());
 	}
 
-	public void winTheSet() {
+	public void winTheGame() {
 		this.game.setScore(0);
 		sets.stream().filter(s -> s.isCurrent()).findFirst().get().score();
 	}
 
-	public void looseTheSet() {
+	public void endTheSet() {
+		sets.stream().filter(s -> s.isCurrent()).findFirst().get().finish();
+		sets.add(new SetPoint());
+	}
+
+	public void looseTheGame() {
 		this.game.setScore(0);
 	}
 

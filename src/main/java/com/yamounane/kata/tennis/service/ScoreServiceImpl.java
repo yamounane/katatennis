@@ -19,8 +19,12 @@ public class ScoreServiceImpl implements ScoreService {
 			Player second = party.getPlayerFrom(player, false);
 
 			if (!isCurrentGameIsDeuce(party)) {
-				scorer.winTheSet();
-				second.looseTheSet();
+				scorer.winTheGame();
+				second.looseTheGame();
+				if (isSetIsWonByScorer(scorer, second)) {
+					scorer.endTheSet();
+					second.endTheSet();
+				}
 			} else {
 				scorer.getGame().advantage();
 			}
@@ -31,6 +35,18 @@ public class ScoreServiceImpl implements ScoreService {
 		if (party.getPlayerOne().getGame().getScore() == 3 && party.getPlayerTwo().getGame().getScore() == 3) {
 			return true;
 		}
+		return false;
+	}
+
+	private boolean isSetIsWonByScorer(Player scorer, Player second) {
+		int scorerSet = scorer.getSets().stream().filter(s -> s.isCurrent()).findFirst().get().getScore();
+		int secondSet = second.getSets().stream().filter(s -> s.isCurrent()).findFirst().get().getScore();
+
+		if (secondSet < 6 && scorerSet >= 6 || secondSet == 6 && scorerSet > 6
+				|| secondSet > 6 && scorerSet > secondSet) {
+			return true;
+		}
+
 		return false;
 	}
 
