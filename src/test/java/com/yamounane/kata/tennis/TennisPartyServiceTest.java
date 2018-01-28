@@ -1,6 +1,7 @@
 package com.yamounane.kata.tennis;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -47,4 +48,18 @@ public class TennisPartyServiceTest {
 		assertThat(party.isFinished()).isEqualTo(false);
 	}
 
+	@Test
+	public void should_raise_exception_for_begin_party_when_player_one_is_null() throws TennisPartyException {
+		assertThatThrownBy(() -> service.beginParty(null, federer)).isInstanceOf(TennisPartyException.class);
+	}
+
+	@Test
+	public void should_raise_exception_for_begin_party_when_player_two_is_null() throws TennisPartyException {
+		assertThatThrownBy(() -> service.beginParty(nadal, null)).isInstanceOf(TennisPartyException.class);
+	}
+
+	@Test
+	public void should_raise_exception_for_begin_party_when_players_are_null() throws TennisPartyException {
+		assertThatThrownBy(() -> service.beginParty(null, null)).isInstanceOf(TennisPartyException.class);
+	}
 }
