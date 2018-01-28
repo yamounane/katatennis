@@ -16,9 +16,13 @@ public class GamePoint extends Point {
 	}
 
 	public boolean score() {
-		if (++super.score > 3) {
+		int newScore = score;
+
+		if (++newScore > 3) {
 			return false;
 		}
+		score = newScore;
+
 		return true;
 	}
 

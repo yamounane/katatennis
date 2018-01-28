@@ -18,17 +18,17 @@ public class ScoreServiceImpl implements ScoreService {
 			Player scorer = party.getPlayerFrom(player, true);
 			Player second = party.getPlayerFrom(player, false);
 
-			if (isCurrentGameIsDeuce(party)) {
-				scorer.getGame().advantage();
-			} else {
+			if (!isCurrentGameIsDeuce(party)) {
 				scorer.winTheSet();
 				second.looseTheSet();
+			} else {
+				scorer.getGame().advantage();
 			}
 		}
 	}
 
 	private boolean isCurrentGameIsDeuce(TennisParty party) {
-		if (party.getPlayerOne().getGame().getScore() == 3 && party.getPlayerOne().getGame().getScore() == 3) {
+		if (party.getPlayerOne().getGame().getScore() == 3 && party.getPlayerTwo().getGame().getScore() == 3) {
 			return true;
 		}
 		return false;

@@ -27,14 +27,6 @@ public class TennisParty {
 		return false;
 	}
 
-	// public void setWonBy(Player player) throws ScoreException {
-	// if (player == null || !isRegistered(player)) {
-	// throw new ScoreException(String.format("Unable to win the set for player %s",
-	// player));
-	// }
-	// player.winTheSet();
-	// }
-
 	public Player getPlayerFrom(Player player, boolean isThisPlayer) throws ScoreException {
 		if (player == null || !isRegistered(player)) {
 			throw new ScoreException(

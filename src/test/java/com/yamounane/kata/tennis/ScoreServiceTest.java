@@ -63,6 +63,23 @@ public class ScoreServiceTest {
 	}
 
 	@Test
+	public void should_advantage_game_score_increase_when_player_win_the_game_for_party() throws ScoreException {
+		scoreService.score(rollandGarrosFinal, federer);
+		scoreService.score(rollandGarrosFinal, nadal);
+		scoreService.score(rollandGarrosFinal, federer);
+		scoreService.score(rollandGarrosFinal, nadal);
+		scoreService.score(rollandGarrosFinal, federer);
+		scoreService.score(rollandGarrosFinal, nadal);
+		scoreService.score(rollandGarrosFinal, federer);
+		scoreService.score(rollandGarrosFinal, federer);
+
+		assertThat(federer.getSets().get(0).getScore()).isEqualTo(1);
+		assertThat(federer.getGame().getScore()).isEqualTo(0);
+		assertThat(nadal.getSets().get(0).getScore()).isEqualTo(0);
+		assertThat(nadal.getGame().getScore()).isEqualTo(0);
+	}
+
+	@Test
 	public void should_raise_exception_when_scoring_for_null_player() throws ScoreException {
 		assertThatThrownBy(() -> scoreService.score(rollandGarrosFinal, null)).isInstanceOf(ScoreException.class);
 	}
