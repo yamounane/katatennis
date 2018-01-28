@@ -120,6 +120,42 @@ public class ScoreServiceTest {
 	}
 
 	@Test
+	public void should_player_win_the_set_when_player_win_28_against_24_games() throws ScoreException {
+		repeat(20, () -> {
+			try {
+				scoreService.score(rollandGarrosFinal, federer);
+			} catch (ScoreException e) {
+				fail();
+			}
+		});
+		repeat(24, () -> {
+			try {
+				scoreService.score(rollandGarrosFinal, nadal);
+			} catch (ScoreException e) {
+				fail();
+			}
+		});
+		repeat(8, () -> {
+			try {
+				scoreService.score(rollandGarrosFinal, federer);
+			} catch (ScoreException e) {
+				fail();
+			}
+		});
+
+		assertThat(nadal.getGame().getScore()).isEqualTo(0);
+		assertThat(nadal.getSets().get(0).getScore()).isEqualTo(6);
+		assertThat(nadal.getSets().get(1).getScore()).isEqualTo(0);
+		assertThat(nadal.getSets().get(0).isCurrent()).isEqualTo(false);
+		assertThat(nadal.getSets().get(1).isCurrent()).isEqualTo(true);
+		assertThat(federer.getGame().getScore()).isEqualTo(0);
+		assertThat(federer.getSets().get(0).getScore()).isEqualTo(7);
+		assertThat(federer.getSets().get(1).getScore()).isEqualTo(0);
+		assertThat(federer.getSets().get(0).isCurrent()).isEqualTo(false);
+		assertThat(federer.getSets().get(1).isCurrent()).isEqualTo(true);
+	}
+
+	@Test
 	public void should_raise_exception_when_scoring_for_null_player() throws ScoreException {
 		assertThatThrownBy(() -> scoreService.score(rollandGarrosFinal, null)).isInstanceOf(ScoreException.class);
 	}

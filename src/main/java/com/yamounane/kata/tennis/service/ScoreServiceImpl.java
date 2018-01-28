@@ -42,8 +42,7 @@ public class ScoreServiceImpl implements ScoreService {
 		int scorerSet = scorer.getSets().stream().filter(s -> s.isCurrent()).findFirst().get().getScore();
 		int secondSet = second.getSets().stream().filter(s -> s.isCurrent()).findFirst().get().getScore();
 
-		if (secondSet < 6 && scorerSet >= 6 || secondSet == 6 && scorerSet > 6
-				|| secondSet > 6 && scorerSet > secondSet) {
+		if (secondSet < 5 && scorerSet > 5 || secondSet == 6 && scorerSet > 6) {
 			return true;
 		}
 
