@@ -11,7 +11,7 @@ import com.yamounane.kata.tennis.model.TennisParty;
  */
 public interface ScoreService {
 
-	void score(TennisParty party, Player player) throws ScoreException;
+	TennisParty score(TennisParty party, Player player) throws ScoreException;
 
 	String getScoreFor(TennisParty party) throws ScoreException;
 

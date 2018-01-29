@@ -15,6 +15,6 @@ public interface TennisPartyService {
 
 	String getScoreFor(TennisParty party) throws TennisPartyException;
 
-	void playerScoresFor(TennisParty party, Player scorer) throws TennisPartyException;
+	TennisParty playerScoresFor(TennisParty party, Player scorer) throws TennisPartyException;
 
 }

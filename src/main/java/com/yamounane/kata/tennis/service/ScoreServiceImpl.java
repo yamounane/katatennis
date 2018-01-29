@@ -7,7 +7,7 @@ import com.yamounane.kata.tennis.model.TennisParty;
 public class ScoreServiceImpl implements ScoreService {
 
 	@Override
-	public void score(TennisParty party, Player player) throws ScoreException {
+	public TennisParty score(TennisParty party, Player player) throws ScoreException {
 		if (party == null || player == null || party.isFinished() || !party.isRegistered(player)) {
 			throw new ScoreException(String.format(
 					"Unable to score player %s for party %s : party is over or player/party are null or player is not registered for this party",
@@ -34,6 +34,7 @@ public class ScoreServiceImpl implements ScoreService {
 				scorer.getGame().advantage();
 			}
 		}
+		return party;
 	}
 
 	private boolean partyIsWon(Player scorer, Player second) {
